@@ -1,12 +1,13 @@
-// src/context/ThemeContext.jsx
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const ThemeContext = createContext();
 
 /**
- * Obaluje celou aplikaci a umožňuje přepínat světelné/tmavé téma.
- * Ukládá volbu do localStorage a při změně nastaví třídu na <body>.
+ * Obalovací komponenta, která zajišťuje:
+ *  - Stav `theme` ('light' | 'dark'),
+ *  - Funkce `setLight` a `setDark`,
+ *  - Při změně témy se na <body> přidá odpovídající třída `theme-light` nebo `theme-dark`.
+ *  - Ukládá téma do localStorage.
  */
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {

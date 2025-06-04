@@ -1,8 +1,7 @@
-// src/styles/sidebar.scss
-
 @import './variables';
 @import './theme';
 
+// Sidebar vlevo (fixed)
 .sidebar {
   width:  $sidebar-width;
   height: 100vh;
@@ -15,7 +14,7 @@
 
   &__logo {
     margin-top: 20px;
-    margin-bottom: 0;
+    margin-bottom: 40px;
     display: flex;
     justify-content: center;
     align-items: center;

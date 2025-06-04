@@ -1,17 +1,17 @@
-// src/components/BottomBar.jsx
-
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/bottombar.scss';
 import { FiMenu, FiStar, FiHeart, FiSettings, FiUser, FiBell } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
 
-const iconComponents = [FiSettings, FiSettings, FiSettings, FiSettings, FiSettings];
+const iconComponents = [FiStar, FiHeart, FiSettings, FiUser, FiBell];
 
 const BottomBar = () => {
   const { theme, setLight, setDark } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [hoveredX, setHoveredX] = useState(null);
   const iconsContainerRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleMenuClick = () => {
     setDropdownOpen((prev) => !prev);
@@ -21,7 +21,6 @@ const BottomBar = () => {
     e.target.value === 'light' ? setLight() : setDark();
   };
 
-  // Při pohybu myší nad kontejnerem ikon uložíme X
   const handleMouseMove = (e) => {
     setHoveredX(e.clientX);
   };
@@ -30,14 +29,37 @@ const BottomBar = () => {
     setHoveredX(null);
   };
 
+  // NOVĚ: funkce pro odhlášení (logout)
+  const handleLogout = async () => {
+    try {
+      const res = await fetch('https://app.byxbot.com/php/logout.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({})
+      });
+      if (res.ok) {
+        // Vyčistíme localStorage (authToken) a přesměrujeme na /login
+        localStorage.removeItem('authToken');
+        navigate('/login');
+      } else {
+        console.error(`Logout failed (HTTP ${res.status})`);
+      }
+    } catch (err) {
+      console.error('Chyba při odhlášení:', err);
+    }
+  };
+
   return (
     <div className="bottombar">
-      {/* Levá část: Menu */}
+      {/* Levá část: Menu tlačítko + dropdown */}
       <div className="bottombar__left">
         <button className="bottombar__left-button" onClick={handleMenuClick}>
           <FiMenu size={20} /> Menu
         </button>
+
         <div className={`bottombar__left-dropdown ${dropdownOpen ? 'visible' : ''}`}>
+          {/* Přepínač tématu */}
           <div className="bottombar__left-dropdown-item bottombar__left-dropdown-item-theme">
             <div>
               <input
@@ -62,9 +84,13 @@ const BottomBar = () => {
               <label htmlFor="theme-dark">Tmavé</label>
             </div>
           </div>
+
+          {/* Whats New */}
           <div className="bottombar__left-dropdown-item bottombar__left-dropdown-item-whatsnew">
             Whats New <span>6/4/25</span>
           </div>
+
+          {/* Need help? */}
           <a
             className="bottombar__left-dropdown-item bottombar__left-dropdown-item-help"
             href="https://discord.gg/SqQskHWb"
@@ -73,10 +99,18 @@ const BottomBar = () => {
           >
             Need help?
           </a>
+
+          {/* NOVĚ: Logout tlačítko */}
+          <button
+            className="bottombar__left-dropdown-item bottombar__left-dropdown-item-logout"
+            onClick={handleLogout}
+          >
+            Odhlásit
+          </button>
         </div>
       </div>
 
-      {/* Absolutně umístěný kontejner ikon ve středu */}
+      {/* Střední část: interaktivní ikonky s “vlnivým” hover efektem */}
       <div
         className="bottombar__center-icons"
         ref={iconsContainerRef}
@@ -85,14 +119,14 @@ const BottomBar = () => {
       >
         {iconComponents.map((Icon, idx) => {
           if (hoveredX === null) {
-            // Žádný hover = všechny dole
+            // Pokud není hover, všechny ikony jsou dole
             return (
               <div key={idx} className="bottombar__center-icon">
                 <Icon size={20} />
               </div>
             );
           }
-          // Vypočítáme efekt pro každou ikonu
+          // Vypočítáme, jak moc se každá ikona zvedne podle vzdálenosti od hladiny kurzoru
           const container = iconsContainerRef.current;
           const { left, width } = container.getBoundingClientRect();
           const segment = width / iconComponents.length;
