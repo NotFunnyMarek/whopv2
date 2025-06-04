@@ -16,7 +16,7 @@
   padding: 0 20px;
   box-sizing: border-box;
   z-index: 100;
-  justify-content: flex-start; /* Levá část vlevo, ikony absolutně */
+  justify-content: flex-start; /* Levá část vlevo */
 
   &__left {
     position: relative;
@@ -109,7 +109,6 @@
     }
   }
 
-  /* Absolutně umístěný kontejner ikon ve středu */
   &__center-icons {
     position: absolute;
     left: 50%;
