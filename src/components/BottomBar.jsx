@@ -5,7 +5,6 @@ import { FiMenu, FiStar, FiHeart, FiSettings, FiUser, FiBell } from 'react-icons
 import { useTheme } from '../context/ThemeContext';  // <-- správná cesta
 
 const iconComponents = [FiStar, FiHeart, FiSettings, FiUser, FiBell];
-const iconComponents = [FiStar, FiHeart, FiSettings, FiUser, FiBell];
 
 const BottomBar = () => {
   // Tady právě destrukturalizujeme hodnoty z contextu.
