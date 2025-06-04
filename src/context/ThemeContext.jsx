@@ -1,5 +1,3 @@
-// src/context/ThemeContext.jsx
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 // Vytvoříme kontext

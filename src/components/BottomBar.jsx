@@ -1,10 +1,10 @@
-// src/components/BottomBar.jsx
-
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/bottombar.scss';
 import { FiMenu, FiStar, FiHeart, FiSettings, FiUser, FiBell } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';  // <-- správná cesta
 
+const iconComponents = [FiStar, FiHeart, FiSettings, FiUser, FiBell];
 const iconComponents = [FiStar, FiHeart, FiSettings, FiUser, FiBell];
 
 const BottomBar = () => {
@@ -15,6 +15,7 @@ const BottomBar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [hoveredX, setHoveredX] = useState(null);
   const iconsContainerRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleMenuClick = () => {
     setDropdownOpen(prev => !prev);
@@ -32,6 +33,27 @@ const BottomBar = () => {
     setHoveredX(null);
   };
 
+  // NOVĚ: funkce pro odhlášení (logout)
+  const handleLogout = async () => {
+    try {
+      const res = await fetch('https://app.byxbot.com/php/logout.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({})
+      });
+      if (res.ok) {
+        // Vyčistíme localStorage (authToken) a přesměrujeme na /login
+        localStorage.removeItem('authToken');
+        navigate('/login');
+      } else {
+        console.error(`Logout failed (HTTP ${res.status})`);
+      }
+    } catch (err) {
+      console.error('Chyba při odhlášení:', err);
+    }
+  };
+
   return (
     <div className="bottombar">
       {/* Levá část: Menu tlačítko */}
@@ -39,7 +61,9 @@ const BottomBar = () => {
         <button className="bottombar__left-button" onClick={handleMenuClick}>
           <FiMenu size={20} /> Menu
         </button>
+
         <div className={`bottombar__left-dropdown ${dropdownOpen ? 'visible' : ''}`}>
+          {/* Přepínač tématu */}
           {/* Přepínač tématu */}
           <div className="bottombar__left-dropdown-item bottombar__left-dropdown-item-theme">
             <div>
@@ -67,6 +91,8 @@ const BottomBar = () => {
           </div>
 
           {/* Whats New */}
+
+          {/* Whats New */}
           <div className="bottombar__left-dropdown-item bottombar__left-dropdown-item-whatsnew">
             Whats New <span>6/4/25</span>
           </div>
@@ -80,6 +106,14 @@ const BottomBar = () => {
           >
             Need help?
           </a>
+
+          {/* NOVĚ: Logout tlačítko */}
+          <button
+            className="bottombar__left-dropdown-item bottombar__left-dropdown-item-logout"
+            onClick={handleLogout}
+          >
+            Odhlásit
+          </button>
         </div>
       </div>
 

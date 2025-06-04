@@ -2,11 +2,8 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 
-// Naimportujeme ThemeProvider, aby každá komponenta ve stromu měla přístup ke contextu
-import { ThemeProvider } from './context/ThemeContext';
-
-// Importujeme hlavní SCSS (app.scss importuje i bottombar.scss, card.scss, sidebar.scss…)
-import './styles/app.scss';
+// Importujeme SCSS (nikoli index.css)
+import './index.scss';
 
 const container = document.getElementById('root');
 const root = createRoot(container);

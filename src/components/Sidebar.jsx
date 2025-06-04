@@ -1,10 +1,9 @@
 // src/components/Sidebar.jsx
 
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import '../styles/sidebar.scss';
 import { FiHome, FiSearch, FiMessageSquare, FiBell, FiUser } from 'react-icons/fi';
-
-// Logo (přesně jméno logo.png ve složce src/assets/)
 import Logo from '../assets/logo.png';
 
 const Sidebar = () => (
@@ -15,19 +14,29 @@ const Sidebar = () => (
     <nav className="sidebar__nav">
       <ul>
         <li className="sidebar__nav-item">
-          <FiHome className="sidebar__icon" />
+          <NavLink to="/" className="sidebar__link" end>
+            <FiHome className="sidebar__icon" />
+          </NavLink>
         </li>
         <li className="sidebar__nav-item">
-          <FiSearch className="sidebar__icon" />
+          <NavLink to="/search" className="sidebar__link">
+            <FiSearch className="sidebar__icon" />
+          </NavLink>
         </li>
         <li className="sidebar__nav-item">
-          <FiMessageSquare className="sidebar__icon" />
+          <NavLink to="/chat" className="sidebar__link">
+            <FiMessageSquare className="sidebar__icon" />
+          </NavLink>
         </li>
         <li className="sidebar__nav-item">
-          <FiBell className="sidebar__icon" />
+          <NavLink to="/notifications" className="sidebar__link">
+            <FiBell className="sidebar__icon" />
+          </NavLink>
         </li>
         <li className="sidebar__nav-item">
-          <FiUser className="sidebar__icon" />
+          <NavLink to="/profile" className="sidebar__link">
+            <FiUser className="sidebar__icon" />
+          </NavLink>
         </li>
       </ul>
     </nav>

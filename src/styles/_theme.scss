@@ -1,7 +1,9 @@
-// src/styles/_theme.scss
-
 @import './variables';
 
+/**
+ * Definuje CSS proměnné pro světlé a tmavé téma.
+ * Při aktivní třídě .theme-light nebo .theme-dark na <body> se budou používat odpovídající barvy.
+ */
 .theme-light {
   --bg-color:             #{$color-bg-light};
   --text-color:           #{$color-text-light};
